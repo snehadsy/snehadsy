@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
+
 <body>
     <div class="dashboard_sec py-4">
         <div class="container">
@@ -41,8 +43,9 @@
                             <td>{{ $student->contact }}</td>
                             <td>{{ $student->year }}</td>
                             <td>
-                                <img src="{{ asset('School/image/' . $student->image) }}" alt="{{ $student->name }}"
-                                    width="50">
+                                <img src="{{ url('storage/app/public/uploads/School/image/' . $student->image) }}"
+                                    alt="Image" style="max-width: 100px; max-height: 100px;">
+
                             </td>
                             <td>
                                 <a href="{{ route('students.show', $student->id) }}"
