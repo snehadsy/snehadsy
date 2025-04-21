@@ -27,14 +27,14 @@ class SchoolController extends Controller
       {
           try {
               $validator = Validator::make($request->all(), [
-                  'name'           => 'required|string|max:255',
-                  'address'        => 'required|string|max:500',
-                  'state'          => 'required|exists:states,id',
-                  'district'       => 'required|exists:districts,id',
-                  'city'           => 'required|exists:cities,id',
+                  'name'  => 'required|string|max:255',
+                  'address' => 'required|string|max:500',
+                  'state'  => 'required|exists:states,id',
+                  'district' => 'required|exists:districts,id',
+                  'city'  => 'required|exists:cities,id',
                   'established_at' => 'required|date',
-                  'login_id'       => 'required|string|unique:schools,login_id',
-                  'password'       => 'required|string|min:6|confirmed',
+                  'login_id' => 'required|string|unique:schools,login_id',
+                  'password'  => 'required|string|min:6|confirmed',
               ]);
 
               if ($validator->fails()) {
