@@ -7,7 +7,7 @@
     <title>Add Student</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
@@ -59,7 +59,9 @@
 
                 <div class="mb-3">
                     <label class="form-label">Photo</label>
-                    <input type="file" class="form-control" name="image" accept="image/*">
+                    <input type="file" class="form-control" name="image" id="imageInput" accept="image/*">
+                    <img id="imagePreview" src="#" alt="Preview" class="mt-3"
+                        style="max-width: 200px; display: none;" />
                 </div>
 
                 <div class="mb-3">
@@ -85,6 +87,22 @@
         for (let year = currentYear; year >= startYear; year--) {
             yearSelect.append(`<option value="${year}">${year}</option>`);
         }
+    </script>
+    <script>
+        $('#imageInput').on('change', function(event) {
+            const [file] = event.target.files;
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview')
+                        .attr('src', e.target.result)
+                        .show(); // make sure it's visible
+                };
+                reader.readAsDataURL(file);
+            } else {
+                $('#imagePreview').hide();
+            }
+        });
     </script>
     <script>
         $(document).ready(function() {
