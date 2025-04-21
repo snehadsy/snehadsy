@@ -65,4 +65,17 @@ class studentController extends Controller
         }
     }
 
+
+    public function show($id)
+    {
+        try {
+            $student = Student::with('standard','school')->find($id);
+            if (!$student) {
+                return redirect()->route('students.index')->withErrors(['message' => 'Student Not Found.']);
+            }
+            return view('viewStudent', compact('student'));
+        } catch (Exception $e) {
+            Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+        }
+    }
 }
