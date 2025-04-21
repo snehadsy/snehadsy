@@ -11,4 +11,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');
 Route::post('/register-store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
-// Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');
+Route::get('/login', [ControllersSchoolController::class, 'login'])->name('login');

@@ -8,6 +8,7 @@ use App\Models\School;
 use App\Models\State;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +35,7 @@ class SchoolController extends Controller
                   'city'  => 'required|exists:cities,id',
                   'established_at' => 'required|date',
                   'login_id' => 'required|string|unique:schools,login_id',
-                  'password'  => 'required|string|min:6|confirmed',
+                  'password'  => 'required|string|min:6',
               ]);
 
               if ($validator->fails()) {
@@ -56,6 +57,37 @@ class SchoolController extends Controller
           } catch (\Exception $e) {
               Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
               return errorResponse();
+          }
+      }
+
+      public function login(){
+
+        return view('login');
+      }
+
+      public function verifyLogin(Request $request)
+      {
+          $validator = Validator::make($request->all(), [
+              'login_id' => 'required|numeric',
+              'password' => 'required|min:6',
+          ]);
+
+          if ($validator->fails()) {
+            return errorResponse(422, 'Validation Error', $validator->errors());
+        }
+
+
+          $data = [
+              'login_id' => $request->login_id,
+              'password' => $request->password,
+          ];
+
+          if (Auth::attempt($data)) {
+            return successResponse(200, 'Logged In successfully', $data);
+
+          } else {
+            return errorResponse('Invalid login credentials', 401);
+
           }
       }
 
