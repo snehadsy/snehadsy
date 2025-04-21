@@ -7,6 +7,8 @@
     <title>Add Student</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
@@ -57,7 +59,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Photo</label>
-                    <input type="file" class="form-control" name="image">
+                    <input type="file" class="form-control" name="image" accept="image/*">
                 </div>
 
                 <div class="mb-3">
@@ -106,7 +108,8 @@
                     contact: {
                         required: true,
                         digits: true,
-                        maxlength: 10
+                        maxlength: 10,
+                        minlength: 10,
                     },
                     image: {
                         required: true
@@ -129,7 +132,8 @@
                     contact: {
                         required: "Please enter contact number",
                         digits: "Only digits are allowed",
-                        maxlength: "Contact number must be 10 digits"
+                        maxlength: "Contact number must be 10 digits",
+                        minlength: "Contact number must be 10 digits"
                     },
                     image: {
                         required: "Please upload a photo"
@@ -151,11 +155,13 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
+
                             if (response.status_code === 200) {
+                                console.log(response);
                                 toastr.success(response.message);
                                 setTimeout(function() {
-                                    window.location.href = '/students/add';
-                                }, 1000);
+                                    window.location.href = '/students';
+                                }, 2000);
                             } else {
                                 toastr.error("Failed to add");
                                 $('#btn-submit-add').text('Save');
@@ -173,4 +179,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -41,7 +41,7 @@
                             <td>{{ $student->contact }}</td>
                             <td>{{ $student->year }}</td>
                             <td>
-                                <img src="{{ asset('path/to/images/' . $student->image) }}" alt="{{ $student->name }}"
+                                <img src="{{ asset('School/image/' . $student->image) }}" alt="{{ $student->name }}"
                                     width="50">
                             </td>
                             <td>
