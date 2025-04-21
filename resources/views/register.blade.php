@@ -84,7 +84,7 @@
 
                 <div class="mt-4 pt-1">
 
-                        <button type="submit" class="btn btn-info">Submit</button>
+                        <button type="submit" id="btn-submit-add"class="btn btn-info">Submit</button>
 
                 </div>
             </form>
@@ -171,7 +171,7 @@
                 });
 
                 $.ajax({
-                    url: '/register-store',
+                    url: '/register/store',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -183,15 +183,15 @@
                                 window.location.href = '/login';
                             }, 1000);
                         } else {
-                            toastr.error("Failed to add");
-                            $('#btn-submit-add').text('Save');
-                            $('#btn-submit-add').attr('disabled', false);
+                            toastr.error("Failed to Login");
+                            // $('#btn-submit-add').text('Login');
+                            // $('#btn-submit-add').attr('disabled', false);
                         }
                     },
                     error: function (error) {
                         toastr.error("Something went wrong");
-                        $('#btn-submit-add').text('Save');
-                        $('#btn-submit-add').attr('disabled', false);
+                        // $('#btn-submit-add').text('Login');
+                        // $('#btn-submit-add').attr('disabled', false);
                     }
                 });
             }

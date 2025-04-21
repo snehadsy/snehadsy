@@ -65,30 +65,46 @@ class SchoolController extends Controller
         return view('login');
       }
 
+
       public function verifyLogin(Request $request)
       {
-          $validator = Validator::make($request->all(), [
-              'login_id' => 'required|numeric',
-              'password' => 'required|min:6',
-          ]);
+          try {
+              $validator = Validator::make($request->all(), [
+                  'login_id' => 'required|numeric',
+                  'password' => 'required|min:6',
+              ]);
 
-          if ($validator->fails()) {
-            return errorResponse(422, 'Validation Error', $validator->errors());
-        }
+              if ($validator->fails()) {
+                  return errorResponse(422, 'Validation Error', $validator->errors());
+              }
 
+              $school = School::where('login_id', $request->login_id)->first();
 
-          $data = [
-              'login_id' => $request->login_id,
-              'password' => $request->password,
-          ];
+              // If no school found, return error
+              if (!$school) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
 
-          if (Auth::attempt($data)) {
-            return successResponse(200, 'Logged In successfully', $data);
+              // Check if the provided password matches the stored password
+              if (!Hash::check($request->password, $school->password)) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
 
-          } else {
-            return errorResponse('Invalid login credentials', 401);
+              // Store school_id in session for future use
+              session(['school_id' => $school->id]);
 
+              // Return success response if login is successful
+              return successResponse(200, 'Logged in successfully', [
+                  'id' => $school->id,
+                  'name' => $school->name,
+              ]);
+
+            } catch (\Exception $e) {
+                Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
           }
       }
+
+
+
 
 }

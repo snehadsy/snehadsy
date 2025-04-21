@@ -12,8 +12,9 @@ use App\Http\Controllers\schoolController;
 // });
 
 Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');
-Route::post('/register-store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
-// Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');4
+Route::post('/register/store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
+Route::get('/login', [ControllersSchoolController::class, 'login'])->name('login');
+Route::post('/verify/login', [ControllersSchoolController::class, 'verifyLogin'])->name('verify.login');
 
 
 
