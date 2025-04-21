@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('school_xid');
             $table->string('name');
             $table->unsignedBigInteger('standard_xid');
-            $table->enum('gender', ['male', 'female']);
+            $table->enum('gender', ['male', 'female','other']);
             $table->string('contact');
             $table->year('year');
             $table->string('image')->nullable();
