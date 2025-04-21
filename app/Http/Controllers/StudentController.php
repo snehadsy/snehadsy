@@ -13,7 +13,9 @@ class studentController extends Controller
 {
     public function index()
     {
-        $students = Student::where('school_xid', 1)->with('standard')->get(); // here add conditionn according school login
+        $students = Student::where('school_xid', session('school_xid'))
+        ->with('standard')
+        ->get();
         return view('index', compact('students'));
     }
 
@@ -35,25 +37,30 @@ class studentController extends Controller
                 'contact' => 'required|digits_between:7,15',
             ]);
 
+            $schoolId = session('school_xid');
+
+            if (!$schoolId) {
+                return errorResponse(403, 'Unauthorized: School not found in session.');
+            }
+
             if (isset($request->image)) {
                 $image = $request->image;
                 $imageName = singleImageUpload($image, 'School/image');
             }
-
 
             Student::create([
                 'name' => $request->name,
                 'standard_xid' => $request->standard_xid,
                 'gender' => $request->gender,
                 'year' => $request->year,
-                'image' => $imageName,
+                'image' => $imageName ?? null,
                 'contact' => $request->contact,
-                'school_xid' =>  1, // remaining
+                'school_xid' => $schoolId, // using session value
             ]);
 
             return successResponse(200, 'Student created successfully');
         } catch (Exception $ex) {
-            Log::error("An error occurred in adding student" . __METHOD__ . ": " . $ex->getMessage());
+            Log::error("An error occurred in adding student " . __METHOD__ . ": " . $ex->getMessage());
             return view('admin_dashboard.pages.error');
         }
     }

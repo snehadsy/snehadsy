@@ -12,8 +12,11 @@ use App\Http\Controllers\schoolController;
 // });
 
 Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');
-Route::post('/register-store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
-// Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');4
+Route::post('/register/store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
+Route::get('/login', [ControllersSchoolController::class, 'login'])->name('login');
+Route::post('/verify/login', [ControllersSchoolController::class, 'verifyLogin'])->name('verify.login');
+Route::post('/logout', [ControllersSchoolController::class, 'logout'])->name('logout');
+
 
 
 
@@ -23,4 +26,3 @@ Route::get('/students/{id}', [StudentController::class, 'show'])->name('students
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 Route::get('/students/{id}/export', [StudentController::class, 'export'])->name('students.export');
 Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
-
