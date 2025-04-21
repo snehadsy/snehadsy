@@ -22,10 +22,12 @@ class DatabaseSeeder extends Seeder
     // }
 
     public function run()
-{
-    $this->call([
-        StandardSeeder::class,
-    ]);
-}
-
+    {
+        $this->call([
+            StandardSeeder::class,
+            StateSeeder::class,
+            DistrictSeeder::class,
+            CitySeeder::class,
+        ]);
+    }
 }
