@@ -19,7 +19,7 @@ class DistrictSeeder extends Seeder
 
         District::insert([
             ['name' => 'Pune', 'state_xid' => $maharashtra->id, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Mumbai', 'state_xid' => $maharashtra->id, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Mumbai City', 'state_xid' => $maharashtra->id, 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Bengaluru', 'state_xid' => $karnataka->id, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
