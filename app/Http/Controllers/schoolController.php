@@ -80,20 +80,16 @@ class SchoolController extends Controller
 
               $school = School::where('login_id', $request->login_id)->first();
 
-              // If no school found, return error
               if (!$school) {
                   return errorResponse(401, 'Invalid login credentials');
               }
 
-              // Check if the provided password matches the stored password
               if (!Hash::check($request->password, $school->password)) {
                   return errorResponse(401, 'Invalid login credentials');
               }
 
-              // Store school_id in session for future use
-              session(['school_id' => $school->id]);
+              session(['school_xid' => $school->id]);
 
-              // Return success response if login is successful
               return successResponse(200, 'Logged in successfully', [
                   'id' => $school->id,
                   'name' => $school->name,
@@ -101,6 +97,18 @@ class SchoolController extends Controller
 
             } catch (\Exception $e) {
                 Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+          }
+      }
+
+      public function logout(Request $request)
+      {
+          try {
+              session()->forget('school_xid');
+              session()->flush();
+              return successResponse(200, 'Logged out successfully');
+          } catch (\Exception $e) {
+              Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+              return errorResponse(500, 'Something went wrong');
           }
       }
 

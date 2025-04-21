@@ -15,6 +15,8 @@ Route::get('/', [ControllersSchoolController::class, 'register'])->name('registe
 Route::post('/register/store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
 Route::get('/login', [ControllersSchoolController::class, 'login'])->name('login');
 Route::post('/verify/login', [ControllersSchoolController::class, 'verifyLogin'])->name('verify.login');
+Route::post('/logout', [ControllersSchoolController::class, 'logout'])->name('logout');
+
 
 
 
