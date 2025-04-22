@@ -22,7 +22,7 @@
                 <div class="mb-3">
                     <label>Name</label>
                     <input type="text" name="name" value="{{ $student->name }}" class="form-control"
-                        maxlength="200" autocomplete="off">
+                        maxlength="200" autocomplete="off" oninput="validate(this)">
 
                 </div>
 
@@ -39,7 +39,7 @@
                     </select>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 gender">
                     <label class="form-label d-block">Gender</label>
 
                     <div class="form-check form-check-inline">
@@ -70,8 +70,10 @@
 
                 <div class="mb-3">
                     <label>Contact</label>
-                    <input type="text" name="contact" value="{{ $student->contact }}" class="form-control"
-                        maxlength="10" autocomplete="off" oninput="validate(this)">
+                   
+                        <input type="text" class="form-control" name="contact" placeholder="Enter Contact Number"
+                        maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        id="contact"  value="{{ $student->contact }}">
                 </div>
 
                 <div class="mb-3">
@@ -116,6 +118,11 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         });
+
+        function validate(input) {
+            if (/^\s/.test(input.value))
+                input.value = '';
+        }
 
         $(document).ready(function() {
             $('#edit_student_form').validate({

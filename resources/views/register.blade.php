@@ -24,14 +24,14 @@
                     <label for="exampleInputEmail1" class="form-label">School
                         Name</label>
                     <input type="text" name="name" class="form-control" id="name"
-                        placeholder="Enter School Name" maxlength="200" autocomplete="off">
+                        placeholder="Enter School Name" maxlength="200" autocomplete="off" oninput="validate(this)">
                 </div>
 
                 <div>
                     <label for="exampleInputPassword1" class="form-label">School
                         Address</label>
                     <input type="text" name="address" class="form-control" id="address"
-                        placeholder="Enter School Address" maxlength="200" autocomplete="off">
+                        placeholder="Enter School Address" maxlength="200" autocomplete="off" oninput="validate(this)">
                 </div>
                 <div>
                     <label for="exampleInputPassword1" class="form-label">State</label>
@@ -74,12 +74,12 @@
                 <div>
                     <label for="exampleInputEmail1" class="form-label">Login Id</label>
                     <input type="text" class="form-control" name="login_id" placeholder="Enter Login Id"
-                        id="login_id" maxlength="10" autocomplete="off">
+                        id="login_id" maxlength="10" autocomplete="off" oninput="validate(this)">
                 </div>
                 <div>
                     <label for="exampleInputEmail1" class="form-label">Password</label>
                     <input type="text" class="form-control" name="password" id="password"
-                        placeholder="Enter Password" maxlength="10" autocomplete="off">
+                        placeholder="Enter Password" maxlength="10" autocomplete="off" oninput="validate(this)">
                 </div>
 
                 <div class="mt-4 pt-1">
@@ -97,7 +97,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+<script>
+        function validate(input) {
+            if (/^\s/.test(input.value))
+                input.value = '';
+        }
+</script>
 
     <script>
         $(document).ready(function() {

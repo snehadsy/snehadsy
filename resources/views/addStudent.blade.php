@@ -26,31 +26,31 @@
                     <div class="mb-3">
                         <label class="form-label">Student name</label>
                         <input type="text" class="form-control" name="name" placeholder="Enter Student Name"
-                            maxlength="200" autocomplete="off">
+                            maxlength="200"id="name" autocomplete="off" oninput="validate(this)">
 
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Standard</label>
-                        <select class="form-select" name="standard_xid">
+                        <select class="form-select" name="standard_xid" id="standard_xid">
                             <option value="" disabled selected>Select Standard</option>
                             @foreach ($standards as $standard)
                                 <option value="{{ $standard->id }}">{{ $standard->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Gender</label><br>
+                    <div class="mb-3 gender">
+                        <label class="form-label ">Gender</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" value="male">
+                            <input class="form-check-input" type="radio" name="gender" value="male" id="gender1">
                             <label class="form-check-label">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" value="female">
+                            <input class="form-check-input" type="radio" name="gender" value="female" id="gender2">
                             <label class="form-check-label">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" value="other">
+                            <input class="form-check-input" type="radio" name="gender" value="other" id="gender3">
                             <label class="form-check-label">Other</label>
                         </div>
                     </div>
@@ -73,8 +73,9 @@
 
                     <div class="mb-3">
                         <label class="form-label">Contact number</label>
-                        <input type="number" class="form-control" name="contact" placeholder="Enter Contact Number"
-                            maxlength="10" autocomplete="off" oninput="validate(this)">
+                        <input type="text" class="form-control" name="contact" placeholder="Enter Contact Number"
+    maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+    id="contact">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add</button>
