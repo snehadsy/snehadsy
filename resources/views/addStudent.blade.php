@@ -99,7 +99,7 @@
                 reader.onload = function(e) {
                     $('#imagePreview')
                         .attr('src', e.target.result)
-                        .show(); // make sure it's visible
+                        .show();
                 };
                 reader.readAsDataURL(file);
             } else {

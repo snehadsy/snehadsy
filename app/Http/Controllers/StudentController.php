@@ -62,13 +62,32 @@ class studentController extends Controller
     public function show($id)
     {
         try {
-            $student = Student::with('standard','school')->find($id);
+            $student = Student::with('standard', 'school')->find($id);
             if (!$student) {
                 return redirect()->route('students.index')->withErrors(['message' => 'Student Not Found.']);
             }
             return view('viewStudent', compact('student'));
         } catch (Exception $e) {
             Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            $student = Student::findOrFail($id);
+
+            if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
+                unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
+            }
+            $student->delete();
+
+            return successResponse(200, 'Student deleted successfully.');
+
+        } catch (Exception $e) {
+            Log::error("An error occurred while deleting the student: " . $e->getMessage());
+            return redirect()->route('students.index')->withErrors(['error' => 'Failed to delete the student.']);
         }
     }
 }
