@@ -8,6 +8,10 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+
+
 
 
 class studentController extends Controller
@@ -88,7 +92,6 @@ class studentController extends Controller
     {
         try {
             $student = Student::findOrFail($id);
-
             if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
                 unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
             }
@@ -155,4 +158,13 @@ class studentController extends Controller
             return back()->withErrors(['message' => 'Failed to update student.']);
         }
     }
+    public function export($id)
+    {
+        $student = Student::with(['standard', 'school'])->findOrFail($id);
+        $schoolName = $student->school->name;
+        $pdf = Pdf::loadView('studentpdf', compact('student', 'schoolName'));
+        return $pdf->download('student-details.pdf');
+    }
+
+
 }

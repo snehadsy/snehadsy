@@ -104,8 +104,6 @@ class SchoolController extends Controller
       }
 
 
-
-
       public function logout(Request $request)
       {
           try {
