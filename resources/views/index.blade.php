@@ -7,6 +7,8 @@
     <title>Students</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
@@ -14,12 +16,12 @@
     <div class="dashboard_sec py-4">
         <div class="container">
             <div class="d-flex justify-content-between mb-4">
-                <h4>Dashboard</h4>
+                <h4>Dashboard - School: {{ $school->name }}</h4>
                 <div class="d-flex justify-content-between mb-4 gap-4">
                     <a href="{{ route('students.add') }}" class="btn btn-secondary">+
                         Add</a>
-                    <a href="#" class="btn btn-danger">
-                        Logout</a>
+                        <button type="button" class="btn btn-danger" id="logout_button">Logout</button>
+
                 </div>
             </div>
             <table id="myTable" class="table table-bordered">
@@ -76,6 +78,29 @@
             $('#myTable').DataTable();
         });
     </script>
+    <script>
+        $('#logout_button').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route("logout") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        window.location.href = '/login';
+                    } else {
+                        toastr.error('Logout failed.');
+                    }
+                },
+                error: function(xhr) {
+                    toastr.error('An error occurred during logout.');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

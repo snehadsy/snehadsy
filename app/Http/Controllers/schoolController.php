@@ -89,16 +89,23 @@ class SchoolController extends Controller
               }
 
               session(['school_xid' => $school->id]);
-
+              $students = $school->students;
               return successResponse(200, 'Logged in successfully', [
-                  'id' => $school->id,
-                  'name' => $school->name,
+                  'school_id' => $school->id,
+                      'school_name' => $school->name,
+                      'students' => $students,
+
               ]);
 
             } catch (\Exception $e) {
                 Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+                return errorResponse(500, 'Something went wrong');
+
           }
       }
+
+
+
 
       public function logout(Request $request)
       {
@@ -113,6 +120,6 @@ class SchoolController extends Controller
       }
 
 
-
+    
 
 }
