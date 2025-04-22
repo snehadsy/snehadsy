@@ -84,7 +84,9 @@
 
                 <div class="mt-4 pt-1">
 
-                        <button type="submit" id="btn-submit-add"class="btn btn-info">Submit</button>
+                        <button type="submit" id="btn-submit-add"class="btn btn-success">Submit</button>
+                        <a href="{{ route('login') }}" class="btn btn-info">Login</a>
+
 
                 </div>
             </form>
