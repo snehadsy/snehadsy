@@ -14,19 +14,29 @@ class studentController extends Controller
 {
     public function index()
     {
-        $students = Student::where('school_xid', session('school_xid'))
-            ->with('standard')
-            ->get();
+        try {
+            $students = Student::where('school_xid', session('school_xid'))
+                ->with('standard')
+                ->get();
 
-        $school = School::find(session('school_xid'));
+            $school = School::find(session('school_xid'));
 
-        return view('index', compact('students', 'school'));
+            return view('index', compact('students', 'school'));
+        } catch (Exception $e) {
+            Log::error("An error occurred in view index page " . __METHOD__ . ": " . $e->getMessage());
+            return view('error');
+        }
     }
 
     public function add()
     {
-        $standards = Standard::all();
-        return view('addStudent', compact('standards'));
+        try {
+            $standards = Standard::all();
+            return view('addStudent', compact('standards'));
+        } catch (Exception $e) {
+            Log::error("An error occurred in view add page " . __METHOD__ . ": " . $e->getMessage());
+            return view('error');
+        }
     }
 
     public function store(Request $request)
@@ -65,7 +75,7 @@ class studentController extends Controller
             return successResponse(200, 'Student created successfully');
         } catch (Exception $ex) {
             Log::error("An error occurred in adding student " . __METHOD__ . ": " . $ex->getMessage());
-            return view('admin_dashboard.pages.error');
+            return view('error');
         }
     }
 
@@ -80,6 +90,7 @@ class studentController extends Controller
             return view('viewStudent', compact('student'));
         } catch (Exception $e) {
             Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+            return view('error');
         }
     }
 
@@ -97,7 +108,7 @@ class studentController extends Controller
             return successResponse(200, 'Student deleted successfully.');
         } catch (Exception $e) {
             Log::error("An error occurred while deleting the student: " . $e->getMessage());
-            return redirect()->route('students.index')->withErrors(['error' => 'Failed to delete the student.']);
+            return view('error');
         }
     }
 
@@ -113,6 +124,7 @@ class studentController extends Controller
             return view('editStudent', compact('student', 'standards'));
         } catch (Exception $e) {
             Log::error("An error occurred in editing the ppage " . __METHOD__ . ": " . $e->getMessage());
+            return view('error');
         }
     }
 
@@ -152,7 +164,7 @@ class studentController extends Controller
             return successResponse(200, 'Student updated successfully.');
         } catch (\Exception $e) {
             Log::error("Error updating student: " . $e->getMessage());
-            return back()->withErrors(['message' => 'Failed to update student.']);
+            return view('error');
         }
     }
 }
