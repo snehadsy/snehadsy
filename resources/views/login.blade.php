@@ -21,7 +21,7 @@
                 <h1 class="text-center mb-4">Login</h1>
                 <div>
                     <label for="exampleInputEmail1" class="form-label">Login Id</label>
-                    <input type="number" class="form-control" name="login_id" placeholder="Enter Login Id"
+                    <input type="text" class="form-control" name="login_id" placeholder="Enter Login Id"
                         id="exampleInputEmail1">
                 </div>
                 <div>

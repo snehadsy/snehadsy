@@ -14,19 +14,44 @@
     color: #fff;
     background-size: cover;
 }
+
 .main_sec.login_form .container {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.main_sec form{
+
+.main_sec form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 35px;
 }
-.main_sec.login_form form{
+
+.main_sec.login_form form {
     width: 38%;
     margin: auto;
     grid-template-columns: repeat(1, 1fr);
+}
+
+#register_school_form label.error {
+    color: red;
+    font-size: 14px;
+}
+
+form#studentForm {
+    padding: 15px;
+    border: 1px solid #000;
+    border-radius: 20px;
+}
+
+form#edit_student_form {
+    padding: 15px;
+    border: 1px solid #000;
+    border-radius: 20px;
+}
+
+p.note {
+    font-size: 14px;
+    margin-top: 5px;
 }

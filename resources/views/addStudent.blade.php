@@ -15,67 +15,73 @@
 <body>
 
     <div class=" py-5">
-        <div class="container">
-            <h1 class="text-center mb-5">Add Student</h1>
-            <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3" >Back to List</a>
+        <div class="container row m-auto d-flex justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-2">Add Student</h2>
+                <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3 mb-2">Back to List</a>
 
 
-            <form id="studentForm" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label">Student name</label>
-                    <input type="text" class="form-control" name="name" placeholder="Enter Student Name">
-                </div>
+                <form id="studentForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label">Student name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter Student Name"
+                            maxlength="200" autocomplete="off">
 
-                <div class="mb-3">
-                    <label class="form-label">Standard</label>
-                    <select class="form-select" name="standard_xid">
-                        <option value="" disabled selected>Select Standard</option>
-                        @foreach ($standards as $standard)
-                            <option value="{{ $standard->id }}">{{ $standard->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Gender</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" value="male">
-                        <label class="form-check-label">Male</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" value="female">
-                        <label class="form-check-label">Female</label>
+
+                    <div class="mb-3">
+                        <label class="form-label">Standard</label>
+                        <select class="form-select" name="standard_xid">
+                            <option value="" disabled selected>Select Standard</option>
+                            @foreach ($standards as $standard)
+                                <option value="{{ $standard->id }}">{{ $standard->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" value="other">
-                        <label class="form-check-label">Other</label>
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="male">
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="female">
+                            <label class="form-check-label">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="other">
+                            <label class="form-check-label">Other</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Year</label>
-                    <select class="form-select" name="year" id="yearSelect">
-                        <option value="" disabled selected>Select Year</option>
-                    </select>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Year</label>
+                        <select class="form-select" name="year" id="yearSelect">
+                            <option value="" disabled selected>Select Year</option>
+                        </select>
+                    </div>
 
 
-                <div class="mb-3">
-                    <label class="form-label">Photo</label>
-                    <input type="file" class="form-control" name="image" id="imageInput" accept="image/*">
-                    <img id="imagePreview" src="#" alt="Preview" class="mt-3"
-                        style="max-width: 200px; display: none;" />
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Photo</label>
+                        <input type="file" class="form-control" name="image" id="imageInput" accept="image/*">
+                        <img id="imagePreview" src="#" alt="Preview" class="mt-3"
+                            style="max-width: 200px; display: none;" />
+                            <p class="note">Only jpg, png, jpeg format</p>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Contact number</label>
-                    <input type="number" class="form-control" name="contact" placeholder="Enter Contact Number">
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact number</label>
+                        <input type="number" class="form-control" name="contact" placeholder="Enter Contact Number"
+                            maxlength="10" autocomplete="off" oninput="validate(this)">
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Add</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
 
-            <div id="responseMsg" class="mt-3"></div>
+                <div id="responseMsg" class="mt-3"></div>
+            </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -89,6 +95,11 @@
 
         for (let year = currentYear; year >= startYear; year--) {
             yearSelect.append(`<option value="${year}">${year}</option>`);
+        }
+
+        function validate(input) {
+            if (/^\s/.test(input.value))
+                input.value = '';
         }
     </script>
     <script>
