@@ -28,6 +28,28 @@ class SchoolController extends Controller
         }
     }
 
+    public function districts($stateId)
+    {
+        try {
+            $districts = District::where('state_xid', $stateId)->get();
+            return response()->json(['districts' => $districts]);
+        } catch (\Exception $e) {
+            Log::error("An error occurred while fetching districts for state $stateId: " . $e->getMessage());
+            return errorResponse();
+        }
+    }
+
+    public function cities($districtId)
+    {
+        try {
+            $cities = City::where('district_xid', $districtId)->get();
+            return response()->json(['cities' => $cities]);
+        } catch (\Exception $e) {
+            Log::error("An error occurred while fetching cities for district $districtId: " . $e->getMessage());
+            return errorResponse();
+        }
+    }
+
 
     public function registerStore(Request $request)
     {
@@ -65,6 +87,7 @@ class SchoolController extends Controller
         }
     }
 
+
     public function login()
     {
         try {
@@ -80,7 +103,7 @@ class SchoolController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'login_id' => 'required|numeric',
+                'login_id' => 'required|string',
                 'password' => 'required|min:6',
             ]);
 

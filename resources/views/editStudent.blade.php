@@ -12,79 +12,87 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2>Edit Student</h2>
+    <div class="container row m-auto d-flex justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-align-center">Edit Student</h2>
 
-        <form id="edit_student_form">
-            @csrf
+            <form id="edit_student_form">
+                @csrf
 
-            <div class="mb-3">
-                <label>Name</label>
-                <input type="text" name="name" value="{{ $student->name }}" class="form-control" required>
-            </div>
+                <div class="mb-3">
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ $student->name }}" class="form-control"
+                        maxlength="200" autocomplete="off" oninput="validate(this)">
 
-            <div class="mb-3">
-                <label>Standard</label>
-                <select name="standard_id" class="form-control" required>
-                    <option value="">Select Standard</option>
-                    @foreach ($standards as $standard)
-                        <option value="{{ $standard->id }}"
-                            {{ (int) $student->standard_xid === (int) $standard->id ? 'selected' : '' }}>
-                            {{ $standard->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label d-block">Gender</label>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male"
-                        {{ $student->gender == 'male' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="genderMale">Male</label>
                 </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female"
-                        {{ $student->gender == 'female' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="genderFemale">Female</label>
+                <div class="mb-3">
+                    <label>Standard</label>
+                    <select name="standard_id" class="form-control" required>
+                        <option value="">Select Standard</option>
+                        @foreach ($standards as $standard)
+                            <option value="{{ $standard->id }}"
+                                {{ (int) $student->standard_xid === (int) $standard->id ? 'selected' : '' }}>
+                                {{ $standard->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other"
-                        {{ $student->gender == 'other' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="genderOther">Other</label>
+                <div class="mb-3 gender">
+                    <label class="form-label d-block">Gender</label>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male"
+                            {{ $student->gender == 'male' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="genderMale">Male</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female"
+                            {{ $student->gender == 'female' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="genderFemale">Female</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other"
+                            {{ $student->gender == 'other' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="genderOther">Other</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Year</label>
-                <select class="form-select" name="year" id="yearSelect" required>
-                    <option value="" disabled>Select Year</option>
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label class="form-label">Year</label>
+                    <select class="form-select" name="year" id="yearSelect" required>
+                        <option value="" disabled>Select Year</option>
+                    </select>
+                </div>
 
-            <div class="mb-3">
-                <label>Contact</label>
-                <input type="text" name="contact" value="{{ $student->contact }}" class="form-control" required>
-            </div>
+                <div class="mb-3">
+                    <label>Contact</label>
+                   
+                        <input type="text" class="form-control" name="contact" placeholder="Enter Contact Number"
+                        maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        id="contact"  value="{{ $student->contact }}">
+                </div>
 
-            <div class="mb-3">
-                <label>Image</label><br>
-                @if ($student->image)
-                    <img id="imagePreview"
-                        src="{{ url('storage/app/public/uploads/School/image/' . $student->image) }}" width="100"
-                        class="mb-2">
-                @else
-                    <img id="imagePreview" src="#" width="100" class="mb-2" style="display:none;">
-                @endif
-                <input type="file" name="image" class="form-control" id="imageInput" accept="image/*">
-            </div>
+                <div class="mb-3">
+                    <label>Image</label><br>
+                    @if ($student->image)
+                        <img id="imagePreview"
+                            src="{{ url('storage/app/public/uploads/School/image/' . $student->image) }}"
+                            width="100" class="mb-2">
+                    @else
+                        <img id="imagePreview" src="#" width="100" class="mb-2" style="display:none;">
+                    @endif
+                    <input type="file" name="image" class="form-control" id="imageInput" accept="image/*">
+                    <p class="note">Only jpg, png, jpeg format</p>
 
-            <button type="submit" class="btn btn-primary">Update Student</button>
-        </form>
+                </div>
 
+                <button type="submit" class="btn btn-primary">Update Student</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -110,6 +118,11 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         });
+
+        function validate(input) {
+            if (/^\s/.test(input.value))
+                input.value = '';
+        }
 
         $(document).ready(function() {
             $('#edit_student_form').validate({

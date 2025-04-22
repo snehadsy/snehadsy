@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [schoolController::class, 'register'])->name('register');
+Route::get('/districts/{stateId}', [schoolController::class, 'districts']);
+Route::get('/cities/{districtId}', [schoolController::class, 'cities']);
 Route::post('/register/store', [schoolController::class, 'registerStore'])->name('register.store');
 Route::get('/login', [schoolController::class, 'login'])->name('login');
 Route::post('/verify/login', [schoolController::class, 'verifyLogin'])->name('verify.login');

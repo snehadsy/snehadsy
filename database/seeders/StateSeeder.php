@@ -16,6 +16,10 @@ class StateSeeder extends Seeder
         State::insert([
             ['name' => 'Maharashtra', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Karnataka', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Gujarat', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Tamil Nadu', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'West Bengal', 'created_at' => now(), 'updated_at' => now()],
         ]);
+
     }
 }

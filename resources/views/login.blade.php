@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
@@ -21,14 +21,17 @@
                 <h1 class="text-center mb-4">Login</h1>
                 <div>
                     <label for="exampleInputEmail1" class="form-label">Login Id</label>
-                    <input type="number" class="form-control" name="login_id" placeholder="Enter Login Id"
-                        id="exampleInputEmail1">
+                    <input type="text" class="form-control" name="login_id" placeholder="Enter Login Id"
+                        id="exampleInputEmail1" oninput="validate(this)">
                 </div>
-                <div>
-                    <label for="exampleInputEmail1" class="form-label">Password</label>
+                <div class="position-relative">
+                    <label for="exampleInputEmail2" class="form-label">Password</label>
                     <input type="password" class="form-control" name="password" placeholder="Enter Password"
-                        id="exampleInputEmail1">
+                        id="exampleInputEmail2" oninput="validate(this)">
+                    <span toggle="#exampleInputEmail2" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                 </div>
+
+
                 <div class="d-flex gap-4">
                     <button type="submit" id="btn-submit-add" class="btn btn-primary">Login</button>
                     <a href="{{ route('register') }}" class="btn btn-success">Register</a>
@@ -42,6 +45,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".toggle-password").click(function () {
+                var input = $($(this).attr("toggle"));
+                var isPassword = input.attr("type") === "password";
+                input.attr("type", isPassword ? "text" : "password");
+                $(this).toggleClass("fa-eye fa-eye-slash");
+            });
+        });
+
+        function validate(input) {
+            if (/^\s/.test(input.value))
+                input.value = '';
+        }
+    </script>
+
 
 
     <script>
@@ -97,7 +116,7 @@
                                 }, 1000);
                             } else {
                                 toastr.error(response
-                                .message); // This will now show properly
+                                    .message); // This will now show properly
                                 $('#btn-submit-add').text('Login');
                                 $('#btn-submit-add').attr('disabled', false);
                             }

@@ -60,15 +60,14 @@
         <h3>School: {{ $schoolName }}</h3>
 
         <div class="content-row">
-            <!-- Student Image -->
             <div class="image-box">
                 @php
                     $imagePath = public_path('storage/app/public/uploads/School/image/' . $student->image);
                 @endphp
 
                 @if ($student->image && file_exists($imagePath))
-                    <h4>Student Image</h4>
-                    <img src="{{ $imagePath }}" class="img-fluid" alt="Student Image">
+                    <h4 style="text-align: left">Student Image</h4>
+                    <img src="{{ $imagePath }}" class="img-fluid " alt="Student Image" style="margin-bottom: 10px">
                 @else
                     <p>No image available</p>
                 @endif
@@ -77,12 +76,30 @@
             <!-- Student Info Table -->
             <div class="table-box">
                 <table class="table table-bordered">
-                    <tr><th>Name</th><td>{{ $student->name }}</td></tr>
-                    <tr><th>Standard</th><td>{{ $student->standard->name ?? 'N/A' }}</td></tr>
-                    <tr><th>School</th><td>{{ $student->school->name ?? 'N/A' }}</td></tr>
-                    <tr><th>Gender</th><td>{{ ucfirst($student->gender) }}</td></tr>
-                    <tr><th>Year</th><td>{{ $student->year }}</td></tr>
-                    <tr><th>Contact</th><td>{{ $student->contact }}</td></tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ $student->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Standard</th>
+                        <td>{{ $student->standard->name ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>School</th>
+                        <td>{{ $student->school->name ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender</th>
+                        <td>{{ ucfirst($student->gender) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Year</th>
+                        <td>{{ $student->year }}</td>
+                    </tr>
+                    <tr>
+                        <th>Contact</th>
+                        <td>{{ $student->contact }}</td>
+                    </tr>
                 </table>
             </div>
         </div>
