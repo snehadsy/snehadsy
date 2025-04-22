@@ -15,6 +15,9 @@ Route::post('/register/store', [schoolController::class, 'registerStore'])->name
 Route::get('/login', [schoolController::class, 'login'])->name('login');
 Route::post('/verify/login', [schoolController::class, 'verifyLogin'])->name('verify.login');
 Route::post('/logout', [schoolController::class, 'logout'])->name('logout');
+Route::get('/error', function () {
+    return view('error');
+})->name('error.unauthorized');
 
 
 

@@ -12,8 +12,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
 
-
-
 class studentController extends Controller
 {
     public function index()
@@ -79,7 +77,7 @@ class studentController extends Controller
             return successResponse(200, 'Student created successfully');
         } catch (Exception $ex) {
             Log::error("An error occurred in adding student " . __METHOD__ . ": " . $ex->getMessage());
-            return view('error');
+            return errorResponse();
         }
     }
 
@@ -111,7 +109,7 @@ class studentController extends Controller
             return successResponse(200, 'Student deleted successfully.');
         } catch (Exception $e) {
             Log::error("An error occurred while deleting the student: " . $e->getMessage());
-            return view('error');
+            return errorResponse();
         }
     }
 
@@ -167,16 +165,19 @@ class studentController extends Controller
             return successResponse(200, 'Student updated successfully.');
         } catch (\Exception $e) {
             Log::error("Error updating student: " . $e->getMessage());
-            return view('error');
+            return errorResponse();
         }
     }
     public function export($id)
     {
-        $student = Student::with(['standard', 'school'])->findOrFail($id);
-        $schoolName = $student->school->name;
-        $pdf = Pdf::loadView('studentpdf', compact('student', 'schoolName'));
-        return $pdf->download('student-details.pdf');
+        try {
+            $student = Student::with(['standard', 'school'])->findOrFail($id);
+            $schoolName = $student->school->name;
+            $pdf = Pdf::loadView('studentpdf', compact('student', 'schoolName'));
+            return $pdf->download('student-details.pdf');
+        } catch (\Exception $e) {
+            Log::error("Error updating student: " . $e->getMessage());
+            return errorResponse();
+        }
     }
-
-
 }
