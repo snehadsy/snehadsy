@@ -52,6 +52,8 @@
                             <td>
                                 <a href="{{ route('students.show', $student->id) }}"
                                     class="btn btn-info btn-sm">View</a>
+                                <a href="{{ route('students.edit', $student->id) }}"
+                                    class="btn btn-success btn-sm">Edit</a>
                                 <button class="btn btn-danger delete_student" data-student-id="{{ $student->id }}">
                                     Delete
                                 </button>

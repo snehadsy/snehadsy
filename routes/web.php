@@ -20,6 +20,8 @@ Route::post('/register-store', [ControllersSchoolController::class, 'registerSto
 Route::get('/students', [studentController::class, 'index'])->name('students.index');
 Route::get('/students/add', [studentController::class, 'add'])->name('students.add');
 Route::get('/students/{id}', [StudentController::class, 'show'])->name('students.show');
+Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+Route::post('/students/{student}/update', [StudentController::class, 'update'])->name('students.update');
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 Route::get('/students/{id}/export', [StudentController::class, 'export'])->name('students.export');
 Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
