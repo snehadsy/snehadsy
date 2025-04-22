@@ -78,7 +78,6 @@ class studentController extends Controller
             Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
         }
     }
-<<<<<<< HEAD
 
 
     public function destroy($id)
@@ -153,6 +152,3 @@ class studentController extends Controller
         }
     }
 }
-=======
-}
->>>>>>> 8b3689fc84d47eefae32c9731e50d91629440577

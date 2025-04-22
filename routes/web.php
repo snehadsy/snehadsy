@@ -1,9 +1,8 @@
 <?php
 
+use App\Http\Controllers\schoolController;
 use App\Http\Controllers\studentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\schoolController;
- use App\Http\Controllers\SchoolController as ControllersSchoolController;
 
 
 
@@ -11,11 +10,11 @@ use App\Http\Controllers\schoolController;
 //     return view('welcome');
 // });
 
-Route::get('/', [ControllersSchoolController::class, 'register'])->name('register');
-Route::post('/register/store', [ControllersSchoolController::class, 'registerStore'])->name('register.store');
-Route::get('/login', [ControllersSchoolController::class, 'login'])->name('login');
-Route::post('/verify/login', [ControllersSchoolController::class, 'verifyLogin'])->name('verify.login');
-Route::post('/logout', [ControllersSchoolController::class, 'logout'])->name('logout');
+Route::get('/', [schoolController::class, 'register'])->name('register');
+Route::post('/register/store', [schoolController::class, 'registerStore'])->name('register.store');
+Route::get('/login', [schoolController::class, 'login'])->name('login');
+Route::post('/verify/login', [schoolController::class, 'verifyLogin'])->name('verify.login');
+Route::post('/logout', [schoolController::class, 'logout'])->name('logout');
 
 
 

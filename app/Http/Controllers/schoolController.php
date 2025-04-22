@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 
-class studentController extends Controller
+class schoolController extends Controller
 {
     public function index()
     {
