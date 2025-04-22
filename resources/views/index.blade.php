@@ -27,6 +27,7 @@
             <table id="myTable" class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Sr no</th>
                         <th>Name</th>
                         <th>Standard</th>
                         <th>Gender</th>
@@ -39,6 +40,7 @@
                 <tbody>
                     @foreach ($students as $student)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $student->name }}</td>
                             <td>{{ $student->standard->name ?? 'N/A' }}</td>
                             <td>{{ ucfirst($student->gender) }}</td>

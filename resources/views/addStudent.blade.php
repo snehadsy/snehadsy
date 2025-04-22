@@ -99,7 +99,11 @@
                 reader.onload = function(e) {
                     $('#imagePreview')
                         .attr('src', e.target.result)
+<<<<<<< HEAD
                         .show();
+=======
+                        .show(); 
+>>>>>>> 8b3689fc84d47eefae32c9731e50d91629440577
                 };
                 reader.readAsDataURL(file);
             } else {

@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Standard;
 use App\Models\Student;
+use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 
 class studentController extends Controller
@@ -80,23 +84,6 @@ class studentController extends Controller
     }
 
 
-    public function destroy($id)
-    {
-        try {
-            $student = Student::findOrFail($id);
-
-            if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
-                unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
-            }
-            $student->delete();
-
-            return successResponse(200, 'Student deleted successfully.');
-        } catch (Exception $e) {
-            Log::error("An error occurred while deleting the student: " . $e->getMessage());
-            return redirect()->route('students.index')->withErrors(['error' => 'Failed to delete the student.']);
-        }
-    }
-
 
     public function edit($id)
     {
@@ -151,4 +138,74 @@ class studentController extends Controller
             return back()->withErrors(['message' => 'Failed to update student.']);
         }
     }
+      public function login(){
+
+        return view('login');
+      }
+
+
+      public function verifyLogin(Request $request)
+      {
+          try {
+              $validator = Validator::make($request->all(), [
+                  'login_id' => 'required|numeric',
+                  'password' => 'required|min:6',
+              ]);
+
+              if ($validator->fails()) {
+                  return errorResponse(422, 'Validation Error', $validator->errors());
+              }
+
+              $school = School::where('login_id', $request->login_id)->first();
+
+              if (!$school) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
+
+              if (!Hash::check($request->password, $school->password)) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
+
+              session(['school_xid' => $school->id]);
+
+              return successResponse(200, 'Logged in successfully', [
+                  'id' => $school->id,
+                  'name' => $school->name,
+              ]);
+
+            } catch (\Exception $e) {
+                Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+          }
+      }
+
+      public function logout(Request $request)
+      {
+          try {
+              session()->forget('school_xid');
+              session()->flush();
+              return successResponse(200, 'Logged out successfully');
+          } catch (\Exception $e) {
+              Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+              return errorResponse(500, 'Something went wrong');
+          }
+      }
+
+
+      public function destroy($id)
+      {
+          try {
+              $student = Student::findOrFail($id);
+
+              if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
+                  unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
+              }
+              $student->delete();
+
+              return successResponse(200, 'Student deleted successfully.');
+          } catch (Exception $e) {
+              Log::error("An error occurred while deleting the student: " . $e->getMessage());
+              return redirect()->route('students.index')->withErrors(['error' => 'Failed to delete the student.']);
+          }
+      }
+
 }
