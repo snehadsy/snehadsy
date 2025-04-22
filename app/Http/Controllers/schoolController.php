@@ -66,41 +66,42 @@ class SchoolController extends Controller
       }
 
 
-    //   public function verifyLogin(Request $request)
-    //   {
-    //       try {
-    //           $validator = Validator::make($request->all(), [
-    //               'login_id' => 'required|numeric',
-    //               'password' => 'required|min:6',
-    //           ]);
+      public function verifyLogin(Request $request)
+      {
+          try {
+              $validator = Validator::make($request->all(), [
+                  'login_id' => 'required|numeric',
+                  'password' => 'required|min:6',
+              ]);
 
-    //           if ($validator->fails()) {
-    //               return errorResponse(422, 'Validation Error', $validator->errors());
-    //           }
+              if ($validator->fails()) {
+                  return errorResponse(422, 'Validation Error', $validator->errors());
+              }
 
-    //           $school = School::where('login_id', $request->login_id)->first();
+              $school = School::where('login_id', $request->login_id)->first();
 
-    //           if (!$school) {
-    //               return errorResponse(401, 'Invalid login credentials');
-    //           }
+              if (!$school) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
 
-    //           if (!Hash::check($request->password, $school->password)) {
-    //               return errorResponse(401, 'Invalid login credentials');
-    //           }
+              if (!Hash::check($request->password, $school->password)) {
+                  return errorResponse(401, 'Invalid login credentials');
+              }
 
-    //           session(['school_xid' => $school->id]);
+              session(['school_xid' => $school->id]);
+              $students = $school->students;
+              return successResponse(200, 'Logged in successfully', [
+                  'school_id' => $school->id,
+                  'school_name' => $school->name,
+                  'students' => $students,
+              ]);
 
-    //           return successResponse(200, 'Logged in successfully', [
-    //               'id' => $school->id,
-    //               'name' => $school->name,
-    //           ]);
+            } catch (\Exception $e) {
+                Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+                return errorResponse(500, 'Something went wrong');
 
-    //         } catch (\Exception $e) {
-    //             Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
-    //             return errorResponse(500, 'Something went wrong');
-
-    //       }
-    //   }
+          }
+      }
 
 
 
@@ -118,60 +119,6 @@ class SchoolController extends Controller
       }
 
 
-      public function verifyLoginApi(Request $request)
-      {
-          try {
-              $validator = Validator::make($request->all(), [
-                  'login_id' => 'required|numeric',
-                  'password' => 'required|min:6',
-              ]);
 
-              if ($validator->fails()) {
-                  return response()->json([
-                      'status' => 'error',
-                      'message' => 'Validation Error',
-                      'errors' => $validator->errors(),
-                  ], 422);
-              }
-
-              $school = School::where('login_id', $request->login_id)->first();
-
-              if (!$school) {
-                  return response()->json([
-                      'status' => 'error',
-                      'message' => 'Invalid login credentials',
-                  ], 401);
-              }
-
-              if (!Hash::check($request->password, $school->password)) {
-                  return response()->json([
-                      'status' => 'error',
-                      'message' => 'Invalid login credentials',
-                  ], 401);
-              }
-
-              $students = $school->students;
-
-              return response()->json([
-                  'status' => 'success',
-                  'message' => 'Logged in successfully',
-                  'data' => [
-                      'school' => [
-
-                          'name' => $school->name,
-                      ],
-                      'students' => $students,
-                  ],
-              ], 200);
-
-          } catch (\Exception $e) {
-              Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
-
-              return response()->json([
-                  'status' => 'error',
-                  'message' => 'Something went wrong',
-              ], 500);
-          }
-      }
 
 }
