@@ -14,7 +14,7 @@
 
 <body>
 
-    <div class="main_sec py-5">
+    <div class=" py-5">
         <div class="container">
             <h1 class="text-center mb-5">Add Student</h1>
             <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3" >Back to List</a>
