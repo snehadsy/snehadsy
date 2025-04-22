@@ -7,6 +7,8 @@
     <title>Students</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
@@ -52,13 +54,11 @@
                             <td>
                                 <a href="{{ route('students.show', $student->id) }}"
                                     class="btn btn-info btn-sm">View</a>
-                                <form action="{{ route('students.destroy', $student->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')"
-                                        class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <a href="{{ route('students.edit', $student->id) }}"
+                                    class="btn btn-success btn-sm">Edit</a>
+                                <button class="btn btn-danger delete_student" data-student-id="{{ $student->id }}">
+                                    Delete
+                                </button>
                                 <a href="{{ route('students.export', $student->id) }}"
                                     class="btn btn-success btn-sm">Export</a>
                             </td>
@@ -68,9 +68,79 @@
             </table>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <input type="hidden" id="id_input">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this student?
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Confirm Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.delete_student').click(function(e) {
+                e.preventDefault();
+
+                const studentId = $(this).data('student-id');
+                $('#id_input').val(studentId);
+                $('#deleteModal').modal('show');
+            });
+
+            $('#confirmDelete').click(function() {
+                const studentId = $('#id_input').val();
+
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/students/' + studentId,
+                    success: function(response) {
+                        if (response.status_code === 200 || response.success) {
+                            toastr.success(response.message || 'Student deleted successfully!');
+
+                            $(`button[data-student-id="${studentId}"]`).closest('tr').remove();
+
+                            $('#deleteModal').modal('hide');
+
+                        } else {
+                            toastr.error(response.message || 'Failed to delete student');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Ajax request failed', error);
+                        toastr.error('An error occurred while deleting the student.');
+                    }
+                });
+            });
+
+            $('#myTable').DataTable();
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
