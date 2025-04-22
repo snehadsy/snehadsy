@@ -8,6 +8,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 
 class studentController extends Controller
@@ -75,7 +77,7 @@ class studentController extends Controller
             return successResponse(200, 'Student created successfully');
         } catch (Exception $ex) {
             Log::error("An error occurred in adding student " . __METHOD__ . ": " . $ex->getMessage());
-            return view('error');
+            return errorResponse();
         }
     }
 
@@ -99,7 +101,6 @@ class studentController extends Controller
     {
         try {
             $student = Student::findOrFail($id);
-
             if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
                 unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
             }
@@ -108,7 +109,7 @@ class studentController extends Controller
             return successResponse(200, 'Student deleted successfully.');
         } catch (Exception $e) {
             Log::error("An error occurred while deleting the student: " . $e->getMessage());
-            return view('error');
+            return errorResponse();
         }
     }
 
@@ -164,7 +165,19 @@ class studentController extends Controller
             return successResponse(200, 'Student updated successfully.');
         } catch (\Exception $e) {
             Log::error("Error updating student: " . $e->getMessage());
-            return view('error');
+            return errorResponse();
+        }
+    }
+    public function export($id)
+    {
+        try {
+            $student = Student::with(['standard', 'school'])->findOrFail($id);
+            $schoolName = $student->school->name;
+            $pdf = Pdf::loadView('studentpdf', compact('student', 'schoolName'));
+            return $pdf->download('student-details.pdf');
+        } catch (\Exception $e) {
+            Log::error("Error updating student: " . $e->getMessage());
+            return errorResponse();
         }
     }
 }
