@@ -22,12 +22,12 @@
                 <div>
                     <label for="exampleInputEmail1" class="form-label">Login Id</label>
                     <input type="text" class="form-control" name="login_id" placeholder="Enter Login Id"
-                        id="exampleInputEmail1" oninput="validate(this)">
+                        id="exampleInputEmail1" oninput="validate(this)" maxlength="10">
                 </div>
                 <div class="position-relative">
                     <label for="exampleInputEmail2" class="form-label">Password</label>
                     <input type="password" class="form-control" name="password" placeholder="Enter Password"
-                        id="exampleInputEmail2" oninput="validate(this)">
+                        id="exampleInputEmail2" oninput="validate(this)" maxlength="10">
                     <span toggle="#exampleInputEmail2" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                 </div>
 
