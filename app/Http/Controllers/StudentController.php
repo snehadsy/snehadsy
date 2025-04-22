@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -14,9 +15,12 @@ class studentController extends Controller
     public function index()
     {
         $students = Student::where('school_xid', session('school_xid'))
-        ->with('standard')
-        ->get();
-        return view('index', compact('students'));
+            ->with('standard')
+            ->get();
+
+        $school = School::find(session('school_xid'));
+
+        return view('index', compact('students', 'school'));
     }
 
     public function add()
@@ -55,7 +59,7 @@ class studentController extends Controller
                 'year' => $request->year,
                 'image' => $imageName ?? null,
                 'contact' => $request->contact,
-                'school_xid' => $schoolId, // using session value
+                'school_xid' => $schoolId,
             ]);
 
             return successResponse(200, 'Student created successfully');

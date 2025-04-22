@@ -39,8 +39,9 @@ class School extends Model
         return $this->belongsTo(City::class, 'city_xid');
     }
 
+
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'school_xid');
     }
 }

@@ -18,6 +18,7 @@ Route::post('/logout', [schoolController::class, 'logout'])->name('logout');
 
 
 
+Route::middleware('check.school')->group(function () {
 
 Route::get('/students', [studentController::class, 'index'])->name('students.index');
 Route::get('/students/add', [studentController::class, 'add'])->name('students.add');
@@ -27,3 +28,6 @@ Route::post('/students/{student}/update', [StudentController::class, 'update'])-
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 Route::get('/students/{id}/export', [StudentController::class, 'export'])->name('students.export');
 Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
+
+
+});
