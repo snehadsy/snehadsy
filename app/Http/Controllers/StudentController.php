@@ -59,7 +59,7 @@ class studentController extends Controller
                 'year' => $request->year,
                 'image' => $imageName ?? null,
                 'contact' => $request->contact,
-                'school_xid' => $schoolId, 
+                'school_xid' => $schoolId,
             ]);
 
             return successResponse(200, 'Student created successfully');
@@ -73,13 +73,86 @@ class studentController extends Controller
     public function show($id)
     {
         try {
-            $student = Student::with('standard','school')->find($id);
+            $student = Student::with('standard', 'school')->find($id);
             if (!$student) {
                 return redirect()->route('students.index')->withErrors(['message' => 'Student Not Found.']);
             }
             return view('viewStudent', compact('student'));
         } catch (Exception $e) {
             Log::error("An error occurred in " . __METHOD__ . ": " . $e->getMessage());
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            $student = Student::findOrFail($id);
+
+            if ($student->image && file_exists(public_path('storage/app/public/uploads/School/image/' . $student->image))) {
+                unlink(public_path('storage/app/public/uploads/School/image/' . $student->image));
+            }
+            $student->delete();
+
+            return successResponse(200, 'Student deleted successfully.');
+        } catch (Exception $e) {
+            Log::error("An error occurred while deleting the student: " . $e->getMessage());
+            return redirect()->route('students.index')->withErrors(['error' => 'Failed to delete the student.']);
+        }
+    }
+
+
+    public function edit($id)
+    {
+        try {
+            $standards = Standard::all();
+            $student = Student::with('standard', 'school')->findOrFail($id);
+            if (!$student) {
+                return redirect()->route('manage_article')->withErrors(['message' => 'Blog Not Found.']);
+            }
+            return view('editStudent', compact('student', 'standards'));
+        } catch (Exception $e) {
+            Log::error("An error occurred in editing the ppage " . __METHOD__ . ": " . $e->getMessage());
+        }
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'standard_id' => 'required|exists:standards,id',
+            'gender' => 'required|in:male,female,other',
+            'year' => 'required|integer',
+            'contact' => 'required|string|max:20',
+        ]);
+
+        try {
+            $student = Student::findOrFail($id);
+
+            $student->name = $request->name;
+            $student->standard_xid = $request->standard_id;
+            $student->gender = $request->gender;
+            $student->year = $request->year;
+            $student->contact = $request->contact;
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = singleImageUpload($image, 'School/image');
+
+                if ($student->image && file_exists(storage_path('app/public/uploads/School/image/' . $student->image))) {
+                    unlink(storage_path('app/public/uploads/School/image/' . $student->image));
+                }
+            } else {
+                $imageName = $student->image;
+            }
+            $student->image = $imageName;
+            $student->save();
+
+            return successResponse(200, 'Student updated successfully.');
+        } catch (\Exception $e) {
+            Log::error("Error updating student: " . $e->getMessage());
+            return back()->withErrors(['message' => 'Failed to update student.']);
         }
     }
 }
